@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-import config from "../config/config.js";
+import config from "../config/configEnv.js";
 
     const MONGO_USER = config.database.MONGO_USER;
     const MONGO_PASSWORD = config.database.MONGO_PASSWORD;

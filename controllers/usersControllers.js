@@ -1,17 +1,12 @@
 import { User } from "../models/userModel.js";
-import {createHash, isValidPassword} from '../helpers/cryptPassword.js';
+import { createHash, isValidPassword } from "../helpers/cryptPassword.js";
 
 const userLogin = async (req, res) => {
   try {
-    const { username, password } = req.body;
-    const userDB = await User.findOne({ username });
-    if (!userDB) return res.redirect("/");
-    const valid = await isValidPassword(userDB.password,password);
-    if (valid) {
-      req.session.user = username;
-      return res.redirect("/");
-    }
-    return res.redirect("/");
+    return res.json({
+      status: "success",
+      data: req.user
+    })
   } catch (error) {
     return res.json({
       status: "error",
@@ -33,13 +28,13 @@ const userLogout = (req, res) => {
 
 const userSignup = async (req, res) => {
   try {
-    let newUser = new User(req.body);
-    newUser.password = await createHash(req.body.password);
-    const user = await newUser.save();
+    const payload = req.body;
+    const user = req.user;
     return res.json({
       status: "success",
       message: "Aca va el registro",
-      user,
+      payload,
+      user
     });
   } catch (error) {
     return res.json({
