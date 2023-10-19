@@ -6,10 +6,11 @@ import viewsRouter from './routes/viewRoutes.js';
 import usersRouter from './routes/userRoutes.js';
 import initPassportLocal from "./config/configPassport.js";
 import passport from "passport";
-
 import session from 'express-session';
-const __dirname = dirname(fileURLToPath(import.meta.url));
 import config from "./config/configEnv.js";
+
+
+const __dirname = dirname(fileURLToPath(import.meta.url));
 
 const app = express();
 const PORT = config.app.PORT || 3000;

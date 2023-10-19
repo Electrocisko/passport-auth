@@ -1,4 +1,9 @@
 <h1>Error en Passport</h1>
 
-<h2><%= messages[0] %></h2>
+<ul>
+    <% messages.forEach(message => { %>
+        <li><%= message %></li>
+    <% }) %>
+ 
+</ul>
 
