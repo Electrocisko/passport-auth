@@ -4,17 +4,15 @@ import passport from "passport";
 
 const router = Router();
 
-router.post("/login/password", passport.authenticate('login', {failureRedirect: '/error'}),usersControllers.userLogin);
+router.post("/login/password", passport.authenticate('login', {failureRedirect: '/error', failureMessage: true} ),usersControllers.userLogin);
 
 router.get("/logout", usersControllers.userLogout);
 
-router.post("/signup",passport.authenticate('register',{failureRedirect: '/error'}), usersControllers.userSignup);
+router.post("/signup",passport.authenticate('register',{failureRedirect: '/error', failureMessage: true}), usersControllers.userSignup);
 
 router.get('/error', (req,res) => {
-    return res.json({
-        status: "error",
-        payload: req.body
-    })
+        console.log( req.session.messages)
+    return res.render('error.ejs',{messages: req.session.messages })
 })
 
 export default router;

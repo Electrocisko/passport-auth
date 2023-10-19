@@ -1,12 +1,9 @@
-import { User } from "../models/userModel.js";
-import { createHash, isValidPassword } from "../helpers/cryptPassword.js";
+
 
 const userLogin = async (req, res) => {
   try {
-    return res.json({
-      status: "success",
-      data: req.user
-    })
+      req.session.user = req.user;
+      return res.redirect("/");
   } catch (error) {
     return res.json({
       status: "error",
@@ -28,14 +25,8 @@ const userLogout = (req, res) => {
 
 const userSignup = async (req, res) => {
   try {
-    const payload = req.body;
     const user = req.user;
-    return res.json({
-      status: "success",
-      message: "Aca va el registro",
-      payload,
-      user
-    });
+    return res.render('home.ejs');
   } catch (error) {
     return res.json({
       status: "error",

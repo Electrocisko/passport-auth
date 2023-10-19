@@ -5,7 +5,7 @@ const router = Router();
 
 router.get("/", (req, res) => {
     if (req.session.user) {
-      return res.render('index.ejs',{username:req.session.user })
+      return res.render('index.ejs',{username:req.session.user.username })
     }
     return res.render("home.ejs");
   });

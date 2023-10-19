@@ -6,28 +6,32 @@ import { createHash, isValidPassword } from "../helpers/cryptPassword.js";
 const LocalStrategy = local.Strategy;
 
 const initPassportLocal = () => {
-  passport.use(
-    "register",
-    new LocalStrategy(
-      { passReqToCallback: true },
-      async (req, username, password, done) => {
-        //Faltan validaciones de que lleguen los datos
-        const userData = {
-          username,
-          password,
-        };
-        const exist = await User.findOne({ username });
-        if (exist)
-          return done(null, false, { message: "usuario ya registrado" });
-        let newUser = new User(userData);
-        newUser.password = await createHash(req.body.password);
-        const user = await newUser.save();
-        if (!user)
-          return done(true, false, { message: "Error al crear usuario" });
-        return done(null, user);
-      }
-    )
-  );
+try {
+    passport.use(
+        "register",
+        new LocalStrategy(
+          { passReqToCallback: true },
+          async (req, username, password, done) => {
+            //Faltan validaciones de que lleguen los datos
+            const userData = {
+              username,
+              password,
+            };
+            const exist = await User.findOne({ username });
+            if (exist)
+              return done(null, false, { message: "usuario ya registrado" });
+            let newUser = new User(userData);
+            newUser.password = await createHash(req.body.password);
+            const user = await newUser.save();
+            if (!user)
+              return done(null, false, { message: "Error al crear usuario" });
+            return done(null, user);
+          }
+        )
+      );
+} catch (error) {
+    return done(error, false)
+}
 
   passport.use(
     "login",
@@ -37,7 +41,6 @@ const initPassportLocal = () => {
       if (!userDB) return done(null,false, {message: "No existe usuario"});
       const valid = await isValidPassword(userDB.password, password);
       if (valid) {
-       //    req.session.user = username; // va aca?
         return done(null, userDB)
       }
       return done(null,false, {message: "error en validacion de usuario"})
