@@ -3,9 +3,9 @@ import config from "../config/configEnv.js";
 
     const MONGO_USER = config.database.MONGO_USER;
     const MONGO_PASSWORD = config.database.MONGO_PASSWORD;
-
     const MONGO_URI = `mongodb+srv://${MONGO_USER}:${MONGO_PASSWORD}@cluster0.rvl2uyz.mongodb.net/passport-sessions?retryWrites=true&w=majority`;
-
+    const SECRET = config.session.SECRET;
+    
     const connection = async    () => {
         try {
             await mongoose.connect(MONGO_URI);
@@ -17,3 +17,5 @@ import config from "../config/configEnv.js";
     }
 
     export default connection;
+
+    export {MONGO_URI, SECRET}

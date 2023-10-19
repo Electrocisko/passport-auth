@@ -8,13 +8,15 @@ import initPassportLocal from "./config/configPassport.js";
 import passport from "passport";
 import session from 'express-session';
 import config from "./config/configEnv.js";
+import cookieParser from "cookie-parser";
+import MongoStore from "connect-mongo";
+import {MONGO_URI, SECRET} from './database/connection.js'
 
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
 const app = express();
 const PORT = config.app.PORT || 3000;
-const SECRET = config.session.SECRET;
 
 //Conected to database
 connection();
@@ -22,7 +24,18 @@ connection();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static(__dirname + "/public"));
-app.use(session({secret: SECRET, resave: true, saveUninitialized:true }));
+app.use(cookieParser());
+//app.use(session({secret: SECRET, resave: true, saveUninitialized:true })); //MemoyStore
+
+app.use(session({
+  secret: SECRET,
+  store: MongoStore.create({
+      mongoUrl:MONGO_URI,
+      ttl:3600
+  }),
+  resave:false,
+  saveUninitialized: false
+}))
 
 initPassportLocal();
 app.use(passport.initialize());
