@@ -10,6 +10,11 @@ router.get("/logout", usersControllers.userLogout);
 
 router.post("/signup",passport.authenticate('register',{failureRedirect: '/error', failureMessage: true}), usersControllers.userSignup);
 
+router.get('/github', passport.authenticate('github', {scope:['user:email']}),async (req,res) => {console.log('llegue aca')});
+
+router.get('/githubcallback', passport.authenticate('github', {failureRedirect: '/error', failureMessage: true}), usersControllers.userLogin);
+
+
 router.get('/error', (req,res) => {
         console.log( req.session.messages)
     return res.render('error.ejs',{messages: req.session.messages })
