@@ -11,6 +11,13 @@
   <body>
     <section class="prompt">
       <h3>Passport Local</h3>
+      <div>
+        <a href="/auth/google"><button><img src="images/google-icon.png" alt=""></button></a>
+        <br>
+        <a href="/github"><button><img src="images/github-icon.png" alt=""></button></a>
+        <br>
+     
+      </div>
 
       <h1>Sign in</h1>
       <form action="/login/password" method="post">
@@ -35,15 +42,21 @@
             required
           />
         </section>
-        <button type="submit">Sign in</button>
+        <button type="submit" class="signin">Sign in</button>
       </form>
 
       <hr />
       <p class="help">Don't have an account? <a href="/signup">Sign up</a></p>
-      <div>
-        <a href="/github"><button>Login with Github</button></a>
-      </div>
+
     </section>
+
+
+
+
+
+
+
+
     <footer class="info">
       <p>Created by <a href="https://www.jaredhanson.me">Jared Hanson</a></p>
       <p>Part of <a href="https://todomvc.com">TodoMVC</a></p>

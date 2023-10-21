@@ -14,10 +14,24 @@ router.get('/github', passport.authenticate('github', {scope:['user:email']}),as
 
 router.get('/githubcallback', passport.authenticate('github', {failureRedirect: '/error', failureMessage: true}), usersControllers.userLogin);
 
+router.get('/auth/google',passport.authenticate('google', { scope:[ 'email', 'profile' ]}));
+
+router.get( '/googlecallback',passport.authenticate( 'google', {failureRedirect: '/auth/google/failure'}),usersControllers.userLogin);
+
+// router.get('/auth/google/success', (req,res)=> {
+//     console.log(req.user);
+//     res.send('google success')
+//   })
+  
+  router.get('/auth/google/failure', (req,res)=> {
+    res.send('google Faill :/')
+  })
 
 router.get('/error', (req,res) => {
         console.log( req.session.messages)
     return res.render('error.ejs',{messages: req.session.messages })
 })
+
+
 
 export default router;

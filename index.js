@@ -48,26 +48,26 @@ app.use('/',usersRouter);
 
 ////////////////////////////////////////////////////////////////////
 
-app.get('/auth/google',
-  passport.authenticate('google', { scope:
-      [ 'email', 'profile' ] }
-));
+// app.get('/auth/google',
+//   passport.authenticate('google', { scope:
+//       [ 'email', 'profile' ] }
+// ));
 
-app.get( '/googlecallback',
-    passport.authenticate( 'google', {
-        successRedirect: '/auth/google/success',
-        failureRedirect: '/auth/google/failure'
-}));
+// app.get( '/googlecallback',
+//     passport.authenticate( 'google', {
+//         successRedirect: '/auth/google/success',
+//         failureRedirect: '/auth/google/failure'
+// }));
 
 
-app.get('/auth/google/success', (req,res)=> {
-  console.log(req.user);
-  res.send('google success')
-})
+// app.get('/auth/google/success', (req,res)=> {
+//   console.log(req.user);
+//   res.send('google success')
+// })
 
-app.get('/auth/google/failure', (req,res)=> {
-  res.send('google Faill :/')
-})
+// app.get('/auth/google/failure', (req,res)=> {
+//   res.send('google Faill :/')
+// })
 
 
 

@@ -9,10 +9,9 @@
 
 button {
 	display: block;
-	padding: 10px;
 	width: 100%;
 	border-radius: 3px;
-	background: #d83f45;
+	background:lightgrey;		
 	font-size: 14px;
 	font-weight: 700;
 	color: white;
@@ -46,7 +45,7 @@ a.twitter {
 }
 
 button:hover {
-	background-color: #c83f45;
+	border: solid black 2px;
 }
 
 h1 {
@@ -115,4 +114,8 @@ p.help {
 	background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23d83f45' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' class='feather feather-alert-circle'%3E%3Ccircle cx='12' cy='12' r='10'%3E%3C/circle%3E%3Cline x1='12' y1='8' x2='12' y2='12'%3E%3C/line%3E%3Cline x1='12' y1='16' x2='12.01' y2='16'%3E%3C/line%3E%3C/svg%3E");
 	background-repeat: no-repeat;
 	background-position: center left;
+}
+
+.signin{
+	padding: 10px;
 }
