@@ -89,16 +89,13 @@ const initPassportLocal = () => {
       }
     )
   );
-
   passport.serializeUser((user, done) => {
     done(null, user._id);
   });
-
   passport.deserializeUser(async (id, done) => {
     let result = await User.findById(id);
     return done(null, result);
   });
 };
-
 
 export default initPassportLocal;
