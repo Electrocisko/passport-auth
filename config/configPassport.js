@@ -59,7 +59,18 @@ const initPassportLocal = () => {
       },
       async function (accessToken, refreshToken, profile, done) {
         try {
-          const user = await User.create({ username: profile._json.login });
+          let user = await User.findOne({ username: profile._json.name });
+          if (!user) {
+            let randomPass = Date.now();
+            let stringPass = randomPass.toString();
+            let password = await createHash(stringPass);
+            const newUser = {
+              username: profile._json.name,
+              password,
+            };
+            user = await User.create(newUser);
+          }
+
           return done(null, user);
         } catch (error) {
           return done(err, false);
@@ -78,14 +89,18 @@ const initPassportLocal = () => {
       },
       async function (request, accessToken, refreshToken, profile, done) {
         // Aca va toda la logica de ver si ya esta registrado o si lo tengo que registrar
-        let user = await User.findOne({username: profile.displayName})
+        let user = await User.findOne({ username: profile.displayName });
         if (!user) {
+          let randomPass = Date.now();
+          let stringPass = randomPass.toString();
+          let password = await createHash(stringPass);
           const newUser = {
-            username: profile.displayName
-          }
-           user = await User.create(newUser);
+            username: profile.displayName,
+            password,
+          };
+          user = await User.create(newUser);
         }
-        return done(null,user);
+        return done(null, user);
       }
     )
   );
