@@ -76,31 +76,29 @@ const initPassportLocal = () => {
         callbackURL: "http://localhost:3030/googlecallback",
         passReqToCallback: true,
       },
-      function (request, accessToken, refreshToken, profile, done) {
-        // User.findOrCreate({ googleId: profile.id }, function (err, user) {
-        //   return done(err, user);
-        // });
-        return done(null,profile);
+      async function (request, accessToken, refreshToken, profile, done) {
+        // Aca va toda la logica de ver si ya esta registrado o si lo tengo que registrar
+        let user = await User.findOne({username: profile.displayName})
+        if (!user) {
+          const newUser = {
+            username: profile.displayName
+          }
+           user = await User.create(newUser);
+        }
+        return done(null,user);
       }
     )
   );
 
-  // passport.serializeUser((user, done) => {
-  //   done(null, user._id);
-  // });
+  passport.serializeUser((user, done) => {
+    done(null, user._id);
+  });
 
-  // passport.deserializeUser(async (id, done) => {
-  //   let result = await User.findById(id);
-  //   return done(null, result);
-  // });
+  passport.deserializeUser(async (id, done) => {
+    let result = await User.findById(id);
+    return done(null, result);
+  });
 };
 
-passport.serializeUser(function(user, done) {
-  done(null, user);
-});
-
-passport.deserializeUser(function(obj, done) {
-  done(null, obj);
-});
 
 export default initPassportLocal;
