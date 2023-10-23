@@ -16,16 +16,14 @@ router.get('/githubcallback', passport.authenticate('github', {failureRedirect: 
 
 router.get('/auth/google',passport.authenticate('google', { scope:[ 'email', 'profile' ]}));
 
-router.get( '/googlecallback',passport.authenticate( 'google', {failureRedirect: '/auth/google/failure'}),usersControllers.userLogin);
+router.get( '/googlecallback',passport.authenticate( 'google', {failureRedirect: '/error'}),usersControllers.userLogin);
 
-// router.get('/auth/google/success', (req,res)=> {
-//     console.log(req.user);
-//     res.send('google success')
-//   })
+router.get('/facebook', passport.authenticate('facebook'));
+
+router.get('/facebookcallback', passport.authenticate('facebook'),usersControllers.userLogin);
+
   
-  router.get('/auth/google/failure', (req,res)=> {
-    res.send('google Faill :/')
-  })
+
 
 router.get('/error', (req,res) => {
         console.log( req.session.messages)

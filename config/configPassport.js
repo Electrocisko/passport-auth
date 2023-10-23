@@ -4,12 +4,14 @@ import { User } from "../models/userModel.js";
 import { createHash, isValidPassword } from "../helpers/cryptPassword.js";
 import GitHubStrategy from "passport-github2";
 import passportGoogleAuth2 from "passport-google-oauth2";
+import passportFacebook from 'passport-facebook';
 import configEnv from "./configEnv.js";
 
 const LocalStrategy = local.Strategy;
 const GoogleStrategy = passportGoogleAuth2.Strategy;
+const FacebookStrategy =  passportFacebook.Strategy;
 
-const initPassportLocal = () => {
+const initPassportLocal = () => { 
   try {
     passport.use(
       "register",
@@ -73,7 +75,7 @@ const initPassportLocal = () => {
 
           return done(null, user);
         } catch (error) {
-          return done(err, false);
+          return done(error, false);
         }
       }
     )
@@ -104,13 +106,46 @@ const initPassportLocal = () => {
       }
     )
   );
-  passport.serializeUser((user, done) => {
-    done(null, user._id);
-  });
-  passport.deserializeUser(async (id, done) => {
-    let result = await User.findById(id);
-    return done(null, result);
-  });
+
+
+passport.use(new FacebookStrategy({
+  clientID: configEnv.facebook.FACEBOOK_APP_ID,
+  clientSecret: configEnv.facebook.FACEBOOK_APP_SECRET,
+  callbackURL: "http://localhost:3030/facebookcallback",
+  profileFields: ['emails', 'displayName', 'name', 'picture']
+},
+
+  async function(accessToken, refreshToken, profile, done) {
+    try {
+      console.log(profile);
+      //Falta todo la logica de si el usuario existe o no y guardarlo en la base de datos
+      return done(null, profile)
+    } catch (error) {
+      return done(error, false);
+    }
+
+  }
+))
+
+passport.serializeUser((user, done) => {
+  done(null, user);
+});
+passport.deserializeUser(async (user, done) => {
+  return done(null, user);
+});
+
+
+
+// El serializar por id, esta comentado porque por facebook falta la logica para guardar en mongo
+
+  // passport.serializeUser((user, done) => {
+  //   done(null, user._id);
+  // });
+  // passport.deserializeUser(async (id, done) => {
+  //   let result = await User.findById(id);
+  //   return done(null, result);
+  // });
+
 };
 
 export default initPassportLocal;
