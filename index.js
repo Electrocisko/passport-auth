@@ -25,17 +25,17 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static(__dirname + "/public"));
 app.use(cookieParser());
-app.use(session({secret: SECRET, resave: true, saveUninitialized:true })); //MemoyStore
 
-// app.use(session({
-//   secret: SECRET,
-//   store: MongoStore.create({
-//       mongoUrl:MONGO_URI,
-//       ttl:3600
-//   }),
-//   resave:false,
-//   saveUninitialized: false
-// }))
+
+app.use(session({
+  secret: SECRET,
+  store: MongoStore.create({
+      mongoUrl:MONGO_URI,
+      ttl:3600
+  }),
+  resave:false,
+  saveUninitialized: false
+}))
 
 initPassportLocal();
 app.use(passport.initialize());
@@ -45,34 +45,6 @@ app.use(passport.session());
 //Routes
 app.use('/',viewsRouter);
 app.use('/',usersRouter);
-
-////////////////////////////////////////////////////////////////////
-
-// app.get('/auth/google',
-//   passport.authenticate('google', { scope:
-//       [ 'email', 'profile' ] }
-// ));
-
-// app.get( '/googlecallback',
-//     passport.authenticate( 'google', {
-//         successRedirect: '/auth/google/success',
-//         failureRedirect: '/auth/google/failure'
-// }));
-
-
-// app.get('/auth/google/success', (req,res)=> {
-//   console.log(req.user);
-//   res.send('google success')
-// })
-
-// app.get('/auth/google/failure', (req,res)=> {
-//   res.send('google Faill :/')
-// })
-
-
-
-
-////////////////////////////////////////////////////////////////
 
 
 app.get("/error", (req, res) => {
